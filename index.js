@@ -1,9 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt-nodejs');
+var cors = require('cors');
 
 const app = express();
-
+app.use(cors());
 app.use(bodyParser.json());
 const database = {
  users: [
@@ -91,32 +92,28 @@ app.post('/image', (req, res) => {
  }
 })
 
+app.post('/findface', (req, res) => {
+  database.users.forEach(user => {
+    if (user.email === req.body.email) {
+      user.entries++
+      res.json(user)
+    }
+  });
+  res.json('nope')
+})
+
 app.listen(8080, () =>{
    console.log('Example app listening on port 8080!');
  })
 
-//var cors = require('cors');
 //  var a = JSON.parse(req.body);
 //    res.send('signed in');
 //  if (a.username === database.users[0].email && a.password === database.secrets.hash) {
 //    res.send('signed in');
 //  }
-//
-//app.post('/findface', (req, res) => {
-//  database.users.forEach(user => {
-//    if (user.email === req.body.email) {
-//      user.entries++
-//      res.json(user)
-//    }
-//  });
-//  res.json('nope')
-//})
-//
-//
+
 //  secrets: {
 //    users_id: '123',
 //    hash: 'wghhh'
 //  }
-//
-//app.use(cors());
-//
+
